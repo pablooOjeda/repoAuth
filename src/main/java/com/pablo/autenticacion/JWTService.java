@@ -1,6 +1,7 @@
 package com.pablo.autenticacion;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.security.InvalidKeyException;
@@ -13,6 +14,9 @@ public class JWTService {
 
     @Autowired
     AuthService authService;
+
+    @Value("${app.jwt.secret}")
+    private String jwtSecret;
 
     public String generarJWT(String usuario) throws NoSuchAlgorithmException, InvalidKeyException {
         //Queremos hacer un token JWT
@@ -50,7 +54,7 @@ public class JWTService {
 
         //Paso 3: el hasheo
 
-        String firma64 = authService.hashear(cabecera64+"."+body64,"DaleAlegriaATuCuerpoMacarena");
+        String firma64 = authService.hashear(cabecera64+"."+body64, jwtSecret);
         System.out.println(firma64);
 
 
